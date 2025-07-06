@@ -57,7 +57,6 @@ walk-with-me-mvp/
 - Node.js 18+ and npm
 - PostgreSQL database
 - Google Maps API key
-- Twilio account (for SMS)
 
 ### Installation
 
