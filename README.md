@@ -1,152 +1,105 @@
 # Walk With Me 
 
-A social walking application that connects people for walking activities, tracks walks with GPS, and builds a healthy community. Built with Next.js frontend and NestJS backend.
+## Overview
+Walk with me is a mobile application designed to motivate users to walk, either alone or with friends, while enjoying podcasts or Quran recitations. The app tracks location, time, and distance, rewarding users with coins and unlocking features through a leveling system.
 
-## 🌟 Features
+## Features
 
-### Core MVP Features
-- **User Authentication** - Secure registration and login with JWT
-- **GPS Walk Tracking** - Real-time location tracking with interactive maps
-- **Social Walking Events** - Create, join, and manage group walks
-- **Community Feed** - Share achievements and connect with other walkers
-- **Safety Features** - Emergency alerts with SMS notifications
-- **Progress Analytics** - Track distance, duration, and walking statistics
+### Authentication
+**Login & Registration:**
+- Sign in with Google, Twitter, or email/password.
+- Secure user account creation and management.
 
-### Technical Highlights
-- **Modern UI/UX** - Responsive design with Tailwind CSS
-- **Real-time Updates** - WebSocket integration for live features
-- **Security First** - JWT authentication, input validation, CORS protection
-- **Mobile Responsive** - Works seamlessly on all devices
-- **Docker Ready** - Containerized for easy deployment
+### Walking Setup
+**Set Duration:**
+- Choose walk duration (e.g., 30 minutes).
+- App estimates distance based on average walking speed (5 km/hr ≈ 2.5 km in 30 minutes).
 
-## 🏗️ Architecture
+**Set Distance:**
+- Choose target distance (e.g., 5 km).
+- App estimates time based on walking speed.
 
-### Tech Stack
-- **Frontend**: Next.js 14, TypeScript, Tailwind CSS, Redux Toolkit
-- **Backend**: NestJS, TypeScript, Prisma ORM
-- **Database**: PostgreSQL with Redis caching
-- **Maps**: Google Maps JavaScript API
-- **Notifications**: Firebase Cloud Messaging
-- **Storage**: AWS S3 for file uploads
-- **Deployment**: Docker, Vercel, Railway
+### Walk Options
+**Walk Alone:**
+- Listen to podcasts (15 min, 30 min, or 1-hour options).
+- Choose language: Arabic or English.
+- Listen to Quran recitations.
 
-### Project Structure
-```
-walk-with-me-mvp/
-├── backend/          # NestJS API server
-│   ├── src/
-│   │   ├── auth/     # Authentication services
-│   │   ├── users/    # User management
-│   │   ├── walks/    # Walk tracking & events
-│   │   ├── posts/    # Community feed
-│   │   └── notifications/ # SMS & push notifications
-│   └── Dockerfile
-├── frontend/         # Next.js web application
-│   ├── src/
-│   │   ├── app/      # Next.js 14 app router
-│   │   ├── components/ # Reusable UI components
-│   │   └── store/    # Redux state management
-│   └── next.config.js
-├── scripts/          # Database setup scripts
-└── docker-compose.yml
-```
+**Walk with a Friend:**
+- User status set to "Active (Walking)" for visibility.
+- Receive and accept/decline walk requests from friends.
+- Options during paired walk:
+  - Chat while walking.
+  - Listen to synced podcast or Quran recitation.
+- Map view displays avatars walking "side by side" based on synced progress, regardless of physical location.
 
-## 🚀 Quick Start
+### 🗺️ Real-Time Tracking & Visualization
+- Tracks user’s location, path, and progress.
+- Displays real-time avatar updates.
+- For paired walks, shows both users’ avatars progressing together.
 
-### Prerequisites
-- Node.js 18+ and npm
-- PostgreSQL database
-- Google Maps API key
+### 🏆 Levels & Coin System
+**Coin Earning:**
+- 1 km walked = 100 coins.
+- 15 minutes walked = 75 coins.
+- Walk with a friend = +50 coins bonus.
+- Listen to podcast/Quran = +25 coins bonus.
 
-### Installation
+**Leveling System:**
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/salmahmed6/walk-with-me-mvp.git
-cd walk-with-me-mvp
-```
+| Level | Coins Needed | Unlocks                              |
+|-------|--------------|--------------------------------------|
+| 1     | 0            | Basic walk, podcast suggestions      |
+| 2     | 1000         | Choose specific podcasts             |
+| 3     | 1500         | Walk with friends feature            |
+| 4     | 2500         | Chat while walking with friends      |
+| 5     | 4000         | Choose Quran reciters                |
+| 6     | 6000         | Personal goals, visual achievements  |
+| 7+    | Customizable | Advanced themes, badges, challenges  |
 
-2. **Setup Backend**
-```bash
-cd backend
-npm install
-cp .env.example .env
-# Edit .env with your configuration
-npm run prisma:migrate
-npm run start:dev
-```
+### 🧠 Suggested Future Enhancements
+- Daily/Weekly Challenges: E.g., walk 5 km/day for 5 days for bonus coins.
+- Health Stats Integration: Sync with Google Fit/Apple Health for steps and calories.
+- Leaderboard: Compare walking stats with friends or globally.
+- Mood Tracking: Log post-walk feelings.
+- Custom Avatars: Customize avatars with earned rewards.
 
-3. **Setup Frontend**
-```bash
-cd frontend
-npm install
-cp .env.local.example .env.local
-# Edit .env.local with your configuration
-npm run dev
-```
+## MVP Scope
+- Authentication (Google, Twitter, email).
+- Walk setup by time or distance.
+- Walk alone with podcast/Quran (Arabic/English).
+- Walk with a friend (chat + shared media).
+- Real-time map with avatar progress.
+- Coin-based reward system.
+- Leveling system with unlockable features.
 
-4. **Setup Database (Docker)**
-```bash
-docker-compose up -d postgres redis
-```
+## Installation
 
-### Environment Variables
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/salmahmed6/walk-with-me-mvp.git
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Configure environment variables:**
+   - Set up API keys for Google and Twitter OAuth.
+   - Configure backend database and podcast/Quran APIs.
+4. **Run the app:**
+   ```bash
+   npm start
+   ```
 
-#### Backend (.env)
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/walkwithme"
-JWT_SECRET="your-super-secure-jwt-secret"
-GOOGLE_MAPS_API_KEY="your-google-maps-key"
-```
+## Tech Stack
+- **Backend:** Node.js with Express (or Firebase for MVP).
+- **Database:** Firebase Firestore or MongoDB.
+- **APIs:**
+  - Google Maps API for location tracking.
+  - Podcast API (e.g., ListenAPI or Spotify).
+  - Quran recitation API (e.g., Al Quran Cloud).
+- **Authentication:** Firebase Auth or OAuth providers.
+- **Real-Time:** WebSocket or Firebase Realtime Database for synced walks.
 
-#### Frontend (.env.local)
-```env
-NEXT_PUBLIC_API_URL="http://localhost:3000/api"
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="your-google-maps-key"
-```
-
-## 📱 Usage
-
-1. **Register/Login** - Create your account or sign in
-2. **Complete Profile** - Add emergency contact and preferences
-3. **Create Walks** - Plan walking events and invite others
-4. **Track Walks** - Use GPS tracking during your walks
-5. **Share Progress** - Post achievements to the community feed
-6. **Stay Safe** - Use emergency alerts when needed
-
-## 🧪 Testing
-
-### Backend Tests
-```bash
-cd backend
-npm run test
-npm run test:e2e
-```
-
-### Frontend Tests
-```bash
-cd frontend
-npm run test
-npm run test:e2e
-```
-
-## 🚀 Deployment
-
-### Using Docker
-```bash
-docker-compose up -d
-```
-
-## 🔧 Configuration
-
-### Google Maps Setup
-1. Enable Google Maps JavaScript API
-2. Enable Geolocation API
-3. Add your domain to API restrictions
-
-### Firebase Push Notifications
-1. Create Firebase project
-2. Enable Cloud Messaging
-3. Download service account key
 
 
