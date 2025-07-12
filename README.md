@@ -12,7 +12,7 @@ Walk with me is a mobile application designed to motivate users to walk, either 
 - Coin-based reward system.
 - Leveling system with unlockable features.
 
-## Installation
+<!-- ## Installation
 
 1. **Clone the repository:**
    ```bash
@@ -28,10 +28,10 @@ Walk with me is a mobile application designed to motivate users to walk, either 
 4. **Run the app:**
    ```bash
    npm start
-   ```
+   ``` -->
 
 ## Tech Stack
-- **Backend:** Node.js with Express (or Firebase for MVP).
+- **Backend:** Nest.js.
 - **Database:** Firebase Firestore or MongoDB.
 - **APIs:**
   - Google Maps API for location tracking.
