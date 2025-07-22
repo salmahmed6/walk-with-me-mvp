@@ -2,7 +2,8 @@
 
 This document outlines the file structure for the Walk With Me project to ensure clarity and maintainability.
 
-walk-with-me-backend/
+walk-with-me-structure
+```
 ├── /src
 │   ├── /common                 # Shared utilities and middleware
 │   │   ├── /decorators         # Custom decorators
@@ -176,7 +177,7 @@ walk-with-me-backend/
 ├── tsconfig.json               # TypeScript configuration
 ├── jest.config.js              # Jest testing configuration
 └── README.md                   # Project overview
-
+```
 
 ## Additional Notes
 
