@@ -1,6 +1,6 @@
 # Walk With Me Backend
 
-Powering fitness and connection with Walk With Me.
+Powering fitness and connection with Walk With Me!
 
 The Walk With Me backend is a Nest.js-based API that supports a mobile app designed to motivate users to walk, either alone or with friends, while enjoying podcasts or Quran recitations. It handles authentication, walk tracking, real-time chat, location updates, rewards, and content integration.
 
