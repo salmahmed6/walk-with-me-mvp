@@ -43,28 +43,6 @@ export class AuthService {
   }
 
   async logout(dto: LogoutDTO, userId: string): Promise<{ message: string }> {
-    // Get current user from request (you'll need to inject Request)
-    // const userId = req.user.id;
-    
-    if (dto.logoutFromAllDevices) {
-        // Logout from all devices - delete all refresh tokens for user
-        await this.tokensUtil.deleteAllRefreshTokens(userId);
-        return { message: 'Logged out from all devices successfully' };
-    }
-    
-    if (dto.refreshToken) {
-        // Logout specific token
-        await this.tokensUtil.invalidateRefreshToken(dto.refreshToken);
-        return { message: 'Logged out successfully' };
-    }
-    
-    if (dto.deviceId) {
-        // Logout specific device
-        await this.tokensUtil.deleteDeviceTokens(userId, dto.deviceId);
-        return { message: 'Device logged out successfully' };
-    }
-    
-    // Default logout - you might want to require at least one parameter
-    return { message: 'Logout requested' };
-}
+    return { message: 'Logged out successfully. Please discard your tokens.' };
+  }
 }
