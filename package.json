@@ -1,12 +1,32 @@
 {
+  "name": "walk-with-me-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Walk With Me mobile app",
+  "author": "salma",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
   "dependencies": {
     "@nestjs/passport": "^11.0.5",
+    "@nestjs/typeorm": "^11.0.0",
     "bcryptjs": "^3.0.3",
     "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
-    "passport-twitter": "^1.0.4"
+    "passport-twitter": "^1.0.4",
+    "pg": "^8.16.3",
+    "typeorm": "^0.3.27"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
