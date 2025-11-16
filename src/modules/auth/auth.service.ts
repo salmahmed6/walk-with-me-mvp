@@ -45,4 +45,27 @@ export class AuthService {
   async logout(dto: LogoutDTO, userId: string): Promise<{ message: string }> {
     return { message: 'Logged out successfully. Please discard your tokens.' };
   }
+
+  async oauthLogin(provider: string, profile: any) {
+    const { email, username, providerId } = profile;
+    if (!email) throw new BadRequestException('Email not provided by ' + provider);
+
+    let user = await this.prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      user = await this.prisma.user.create({
+        data: {
+          email,
+          username: username || email.split('@')[0],
+          password: '', // OAuth users don't have passwords
+        },
+      });
+    }
+
+    const payload = { sub: user.id, email: user.email };
+    const accessToken = this.tokensUtil.signAccessToken(payload);
+    const refreshToken = this.tokensUtil.signRefreshToken({ sub: user.id });
+
+    return { user, accessToken, refreshToken };
+  }
 }
