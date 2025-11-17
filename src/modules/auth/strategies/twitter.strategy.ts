@@ -1,6 +1,6 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { Strategy } from 'passport-twitter';
+import { Strategy } from 'passport-twitter-oauth2';
 import oauthConfig from '../../../config/oauth.config';
 
 const cfg = oauthConfig();
@@ -9,21 +9,20 @@ const cfg = oauthConfig();
 export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
   constructor() {
     super({
-      consumerKey: cfg.twitter.clientID,
-      consumerSecret: cfg.twitter.clientSecret,
-      callbackURL: cfg.twitter.callbackURL,
-      includeEmail: true,
+        clientID: cfg.twitter.clientID,
+        clientSecret: cfg.twitter.clientSecret,
+        callbackURL: cfg.twitter.callbackURL,
+        scope: ['tweet.read', 'users.read', 'offline.access'],
     });
   }
 
-  async validate(token: string, tokenSecret: string, profile: any, done: Function) {
+  async validate(accessToken: string, refreshToken: string, profile: any) {
     const { id, username, emails } = profile;
-    const user = {
+    return {
       provider: 'twitter',
       providerId: id,
       email: emails?.[0]?.value,
       username,
     };
-    done(null, user);
   }
 }

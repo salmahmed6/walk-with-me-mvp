@@ -68,4 +68,59 @@ export class AuthService {
 
     return { user, accessToken, refreshToken };
   }
+
+    // async oauthLogin(provider: "google" | "twitter", profile: any) {
+    // let user = await this.prisma.user.findFirst({
+    //     where:
+    //     provider === "google"
+    //         ? { googleId: profile.googleId }
+    //         : { twitterId: profile.twitterId },
+    // });
+
+    // if (!user) {
+    //     user = await this.prisma.user.create({
+    //     data: {
+    //         email: profile.email,
+    //         username: profile.username || profile.email.split("@")[0],
+    //         googleId: provider === "google" ? profile.googleId : undefined,
+    //         twitterId: provider === "twitter" ? profile.twitterId : undefined,
+    //     },
+    //     });
+    // }
+
+    // const accessToken = this.tokensUtil.signAccessToken({ sub: user.id });
+    // return { user, accessToken };
+    // }
+
+
+    async authTwitterLogin(provider: string, profile: any) {
+  const { email, username, providerId: twitterId } = profile;
+
+  if (!email) {
+    throw new BadRequestException(`Email not provided by ${provider}`);
+  }
+
+  // Check if the user already exists by Twitter ID
+  let user = await this.prisma.user.findUnique({ where: { email } });
+
+  // If the user doesn't exist, create a new one
+  if (!user) {
+    user = await this.prisma.user.create({
+      data: {
+        email,
+        username: username || email.split('@')[0],
+        password: '', // OAuth users don't have passwords
+        twitterId,   // store Twitter ID
+      },
+    });
+  }
+
+  // Generate access & refresh tokens
+  const payload = { sub: user.id, email: user.email };
+  const accessToken = this.tokensUtil.signAccessToken(payload);
+  const refreshToken = this.tokensUtil.signRefreshToken({ sub: user.id });
+
+  return { user, accessToken, refreshToken };
+}
+
 }

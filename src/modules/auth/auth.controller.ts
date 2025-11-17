@@ -3,6 +3,7 @@ import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from './dto/register.dto';
 import { GoogleAuthGuard } from '../../common/guards/google-auth.guard';
+import { TwitterAuthGuard } from '../../common/guards/twitter-auth.guard';
 import { LoginDTO } from './dto/login.dto';
 import { LogoutDTO } from './dto/logout.dto';
 
@@ -36,4 +37,14 @@ export class AuthController {
 		// req.user comes from GoogleStrategy.validate()
 		return this.authService.oauthLogin('google', req.user);
 	}
+
+    @Get("twitter")
+    @UseGuards(TwitterAuthGuard)
+    async twitterAuth() {}
+
+    @Get("twitter/callback")
+    @UseGuards(TwitterAuthGuard)
+    async twitterCallback(@Req() req: Request) {
+        return this.authService.authTwitterLogin("twitter", req.user);
+    }
 }
