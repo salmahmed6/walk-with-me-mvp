@@ -1,279 +1,194 @@
-# Walk With Me – 4–6 Week MVP Execution Plan
+# Walk With Me – MVP Features (Final)
 
-This execution plan maps directly to the **Walk With Me Technical Design Document (TDD)** and focuses on delivering a functional, testable MVP within **6 weeks**. The plan assumes a small team (or solo backend-led development) and prioritizes core value over feature completeness.
-
----
-
-## MVP Goal
-
-Deliver a stable mobile-first MVP that allows users to:
-
-* Authenticate
-* Configure and start a walk
-* Walk solo or with one partner
-* Listen to audio (podcast or Quran)
-* Track distance/time on a map
-* Earn rewards for completed walks
+This document defines the **final MVP feature set** for Walk With Me, focused on solving real user problems while demonstrating **advanced backend engineering with NestJS**.
 
 ---
 
-## Week 0 – Preparation (Optional but Recommended)
+## 1. Core MVP Features
 
-### Objectives
+### 1.1 Authentication & User Management
 
-* Set up foundations to avoid blockers during development
-
-### Tasks
-
-* Finalize tech stack (Mobile framework, APIs)
-* Create Git repository structure
-* Define environment configs (Dev)
-* Create Firebase project
-* Enable Google Maps API
-
-### Deliverables
-
-* Repo initialized
-* Firebase + Maps credentials ready
-
----
-
-## Week 1 – Core Infrastructure & Authentication
-
-### TDD Mapping
-
-* Section 2: System Architecture
-* Section 4: Authentication & Authorization
-
-### Objectives
-
-* Establish backend foundation
-* Implement secure authentication
-
-### Backend Tasks
-
-* Initialize NestJS project
-* Setup core modules:
-
-  * Auth
-  * User
-* Integrate Firebase Auth
-* Implement:
+* Firebase Authentication:
 
   * Google login
   * Email/password login
-* Token validation middleware
-* User profile persistence (MongoDB)
+* Secure token handling & refresh
+* User profile management
 
-### Mobile Tasks
-
-* Login UI
-* Firebase Auth integration
-* Secure token storage
-
-### Deliverables
-
-* Users can sign up & log in
-* Backend recognizes authenticated users
+**User Problem Solved:**
+Users want a frictionless, reliable login experience.
 
 ---
 
-## Week 2 – Walk Lifecycle & Data Modeling
+### 1.2 Walk Setup & Resumable Walks (Critical)
 
-### TDD Mapping
+* Walk goals:
 
-* Section 5: Walk Lifecycle Management
-* Section 11: Data Model Overview
+  * Time-based
+  * Distance-based
+* Walk modes:
 
-### Objectives
+  * Solo
+  * Social
+* Walk resume after:
 
-* Enable walk creation and state handling
+  * App crash
+  * Network loss
+  * Battery interruption
 
-### Backend Tasks
+**Backend Highlights:**
 
-* Walk module implementation
-* Walk states: Created, Active, Paused, Completed
-* APIs:
-
-  * Create walk
-  * Start walk
-  * Pause walk
-  * Complete walk
-* Persist walk sessions
-
-### Mobile Tasks
-
-* Walk setup screen
-* Start / pause / finish controls
-
-### Deliverables
-
-* Users can create and complete a walk
-* Walks stored correctly in DB
+* State machine for walk lifecycle
+* Idempotent APIs
+* Auto-save telemetry
 
 ---
 
-## Week 3 – Maps, GPS Tracking & Solo Walk Audio
-
-### TDD Mapping
-
-* Section 6: Media System Design
-* Section 8: Maps & Location Tracking
-
-### Objectives
-
-* Enable real-time walk tracking
-* Support solo audio playback
-
-### Backend Tasks
-
-* Media metadata APIs
-* Store walk telemetry summaries
-
-### Mobile Tasks
+### 1.3 Real-Time Maps & GPS Tracking
 
 * Google Maps integration
-* GPS tracking (adaptive polling)
-* Distance & time calculation
-* Audio playback integration:
+* Real-time location tracking
+* Distance & duration calculation
+* Adaptive GPS polling for battery safety
 
-  * Podcast OR Quran (choose one first)
-* Offline audio caching (basic)
+**Backend Highlights:**
 
-### Deliverables
-
-* User sees live map during walk
-* Audio plays during solo walk
+* Telemetry ingestion APIs
+* Validation & smoothing algorithms
 
 ---
 
-## Week 4 – Social Walk & Real-Time Sync
+### 1.4 Audio Experience (Solo & Social)
 
-### TDD Mapping
-
-* Section 7: Social Walk & Real-Time Communication
-
-### Objectives
-
-* Enable paired walking experience
-
-### Backend Tasks
-
-* WebSocket or Firebase Realtime setup
-* Walk pairing logic (simple match)
-* Media sync events
-
-### Mobile Tasks
-
-* Real-time chat UI
-* Playback sync (leader/follower)
-* Reconnect handling
-
-### Deliverables
-
-* Two users can walk together
-* Chat and media sync works
+* Podcast OR Quran audio playback
+* Media metadata storage
+* Offline audio caching
+* Media playback sync in social walks
 
 ---
 
-## Week 5 – Rewards, Offline Sync & Stability
+## 2. Social Walking (Critical)
 
-### TDD Mapping
+### 2.1 Walk Join Requests (NEW – REAL PROBLEM)
 
-* Section 9: Reward & Gamification System
-* Section 10: Offline-First Design
+* Any active walker can receive join requests
+* Request states:
 
-### Objectives
+  * Pending
+  * Accepted
+  * Rejected
+* Time-bound requests (auto-expire)
 
-* Add motivation and reliability
+**User Problem Solved:**
+"I want to join someone walking now, not schedule later."
 
-### Backend Tasks
+---
 
-* Reward calculation logic
-* Coin & level persistence
-* Deferred sync handling
+### 2.2 Real-Time 1:1 Chat (Critical)
 
-### Mobile Tasks
+* Real-time chat starts **only after join request is accepted**
+* Chat scoped to walk session
+* Messages deleted or archived after walk ends
 
-* Rewards UI
+**Backend Highlights:**
+
+* WebSockets / Firebase Realtime DB
+* Authorization per walk session
+* Message ordering & reconnect handling
+
+---
+
+## 3. Payments & Monetization (Stripe Integration)
+
+### 3.1 Premium Walk Features (NEW – ADVANCED)
+
+* Stripe integration:
+
+  * Monthly subscription
+  * One-time walk boost purchases
+
+Premium unlocks:
+
+* Unlimited social walk joins
+* Advanced stats & history
+* Exclusive audio packs
+
+---
+
+### 3.2 Payment Flow
+
+* Secure checkout with Stripe
+* Webhooks for:
+
+  * Payment success
+  * Subscription renewal
+  * Subscription cancellation
+* Backend validation of entitlements
+
+**Backend Highlights:**
+
+* Stripe SDK integration
+* Webhook signature verification
+* Idempotent payment handling
+
+---
+
+## 4. Rewards, Streaks & Anti-Cheat
+
+### 4.1 Rewards System
+
+* Coins earned per walk
+* Bonus for streaks
+
+### 4.2 Habit Engine (NEW)
+
+* Daily & weekly streaks
+* Grace period logic
+
+### 4.3 Anti-Cheat Logic
+
+* Speed validation
+* GPS anomaly detection
+* Walk auto-pause on invalid data
+
+---
+
+## 5. Offline-First & Reliability
+
 * Offline walk continuation
-* Sync on reconnect
-
-### Deliverables
-
-* Users earn coins after walks
-* Walks sync after offline mode
+* Local storage for telemetry
+* Deferred sync on reconnect
+* Conflict resolution rules
 
 ---
 
-## Week 6 – Testing, Monitoring & MVP Hardening
+## 6. MVP Cut Line
 
-### TDD Mapping
-
-* Section 13: Testing Strategy
-* Section 14: Observability & Monitoring
-* Section 16: Security & Privacy
-
-### Objectives
-
-* Stabilize MVP for demo or pilot
-
-### Backend Tasks
-
-* Unit tests (core services)
-* Integration tests (walk flow)
-* Rate limiting
-* Logging & error tracking
-
-### Mobile Tasks
-
-* Bug fixing
-* Performance tuning
-* Battery optimization
-
-### Deliverables
-
-* Stable MVP build
-* Demo-ready application
-
----
-
-## MVP Feature Cut Line (If Time Is Tight)
-
-### Must-Have
+### Must Have
 
 * Authentication
-* Solo walk
-* Maps + tracking
-* One audio source
-* Rewards
+* Resumable solo walks
+* Real-time map tracking
+* Social join requests
+* Real-time 1:1 chat
+* Stripe payments
+* Rewards & streaks
 
 ### Can Be Deferred
 
-* Quran/Podcast dual support
-* Advanced offline maps
-* AI recommendations
 * Group walks
+* AI recommendations
+* Wearables
+* Browser extension
 
 ---
 
-## Success Criteria
+## 7. Why This MVP Is Strong
 
-* User completes a full walk without crashes
-* Accurate distance/time tracking
-* Audio plays reliably
-* Rewards granted correctly
-* Social walk works for at least 2 users
+* Solves **real walking pain points**
+* Monetization-ready
+* Offline & crash-safe
+* Real-time & social
+* Backend-heavy and production-grade
 
----
-
-## Post-MVP Next Steps
-
-* Add AI recommendations
-* Improve media sync accuracy
-* Wearable integration
-* Public beta rollout
-
----
-
-This plan ensures **fast execution**, **low risk**, and **clear alignment** with the Walk With Me TDD while remaining realistic for a 4–6 week MVP timeline.
+This MVP is intentionally designed to be **small, powerful, and scalable**.
