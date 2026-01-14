@@ -1,6 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { UserService } from './user.service';
 
+import { PrismaService } from '../../database/prisma.service';
+
 describe('UserService', () => {
     let userService: UserService;
 
@@ -9,7 +11,7 @@ describe('UserService', () => {
             providers: [
                 UserService,
                 {
-                    provide: 'PrismaService',
+                    provide: PrismaService,
                     useValue: {
                         user: {
                             findUnique: jest.fn(),

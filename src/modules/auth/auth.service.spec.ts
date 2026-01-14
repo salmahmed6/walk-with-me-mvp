@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 
+import { FirebaseService } from './firebase.service';
+
 describe('AuthService', () => {
     let authService: AuthService;
     let userService: jest.Mocked<UserService>;
@@ -22,6 +24,15 @@ describe('AuthService', () => {
                     provide: JwtService,
                     useValue: {
                         sign: jest.fn().mockReturnValue('jwt-token'),
+                    },
+                },
+                {
+                    provide: FirebaseService,
+                    useValue: {
+                        verifyToken: jest.fn().mockResolvedValue({
+                            uid: 'firebase-uid-123',
+                            email: 'salma@test.com',
+                        }),
                     },
                 },
             ],
