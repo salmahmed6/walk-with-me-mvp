@@ -8,13 +8,11 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  email      String   @unique
-  username   String   @unique
-  password   String?
-  googleId   String?
-  twitterId  String?
-  createdAt  DateTime @default(now())
-
-  @@map("users")
+  id           String   @id @default(uuid())
+  firebaseUid  String   @unique
+  email        String   @unique
+  name         String?
+  avatarUrl    String?
+  provider     String?
+  createdAt    DateTime @default(now())
 }
