@@ -1,21 +1,18 @@
 import { Module } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
-import { AuthController } from './auth.controller';
+import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { TokensUtil } from '../../common/utils/tokens.util';
-import { GoogleStrategy } from './strategies/google.strategy';
-import { TwitterStrategy } from './strategies/twitter.strategy';
-import { TwitterAuthGuard } from 'src/common/guards/twitter-auth.guard';
+import { AuthController } from './auth.controller';
+import { FirebaseService } from './firebase.service';
+import { UserService } from '../user/user.service';
 
 @Module({
-  imports: [PassportModule],
+  imports: [
+    JwtModule.register({
+      secret: 'test-secret',
+      signOptions: { expiresIn: '7d' },
+    }),
+  ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    TokensUtil, 
-    GoogleStrategy, 
-    TwitterStrategy, 
-    TwitterAuthGuard
-  ]
+  providers: [AuthService, FirebaseService, UserService],
 })
-export class AuthModule {}
+export class AuthModule { }
