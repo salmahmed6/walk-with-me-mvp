@@ -12,7 +12,7 @@ export class WalkGateway {
 
     @SubscribeMessage('requestJoin')
     async handleJoinRequest(
-        @ConnectedSocket() client,
+        @ConnectedSocket() client: any,
         @MessageBody() data: { walkId: string; userId: string },
     ) {
         await this.walkService.requestJoin(data.walkId, data.userId);
