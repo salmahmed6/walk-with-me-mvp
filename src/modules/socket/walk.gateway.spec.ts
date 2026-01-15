@@ -2,9 +2,14 @@ import { WalkGateway } from './walk.gateway';
 
 describe('WalkGateway', () => {
     let gateway: WalkGateway;
+    let walkService: any;
 
     beforeEach(() => {
-        gateway = new WalkGateway();
+        walkService = {
+            requestJoin: jest.fn(),
+            acceptJoin: jest.fn(),
+        };
+        gateway = new WalkGateway(walkService);
     });
 
     it('should emit join request event', () => {
