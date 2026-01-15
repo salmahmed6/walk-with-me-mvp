@@ -16,3 +16,21 @@ model User {
   provider     String?
   createdAt    DateTime @default(now())
 }
+
+enum WalkStatus {
+  CREATED
+  WAITING
+  ACTIVE
+  FINISHED
+}
+
+model Walk {
+  id              String     @id @default(uuid())
+  ownerId         String
+  participantId   String?
+  durationMinutes Int
+  status          WalkStatus @default(CREATED)
+  createdAt       DateTime   @default(now())
+  startedAt       DateTime?
+  endedAt         DateTime?
+}
