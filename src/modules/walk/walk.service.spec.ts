@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { WalkService } from './walk.service';
+import { PrismaService } from '../../database/prisma.service';
 
 describe('WalkService', () => {
     let service: WalkService;
@@ -9,7 +10,7 @@ describe('WalkService', () => {
             providers: [
                 WalkService,
                 {
-                    provide: 'PrismaService',
+                    provide: PrismaService,
                     useValue: {
                         walk: {
                             create: jest.fn(),
