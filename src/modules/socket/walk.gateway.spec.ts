@@ -1,4 +1,4 @@
-import { WalkGateway } from './walk.gateway';
+import { WalkGateway } from '../socket/walk.gateway';
 
 describe('WalkGateway', () => {
     let gateway: WalkGateway;
@@ -12,14 +12,17 @@ describe('WalkGateway', () => {
         gateway = new WalkGateway(walkService);
     });
 
-    it('should emit join request event', () => {
-        const client = { emit: jest.fn() } as any;
+    it('should emit join request event', async () => {
+        const client = {
+            emit: jest.fn(),
+            broadcast: { emit: jest.fn() }
+        } as any;
 
-        gateway.handleJoinRequest(client, {
+        await gateway.handleJoinRequest(client, {
             walkId: 'walk-1',
             userId: 'user-2',
         });
 
-        expect(client.emit).toHaveBeenCalled();
+        expect(client.broadcast.emit).toHaveBeenCalled();
     });
 });

@@ -17,7 +17,7 @@ describe('AuthService', () => {
                     provide: UserService,
                     useValue: {
                         findByFirebaseUid: jest.fn(),
-                        createUserFromFirebase: jest.fn(),
+                        createUser: jest.fn(),
                     },
                 },
                 {
@@ -52,19 +52,19 @@ describe('AuthService', () => {
         const result = await authService.loginWithFirebase('fake-token');
 
         expect(result.accessToken).toBeDefined();
-        expect(userService.createUserFromFirebase).not.toHaveBeenCalled();
+        expect(userService.createUser).not.toHaveBeenCalled();
     });
 
     it('should create user if not exists', async () => {
         userService.findByFirebaseUid.mockResolvedValue(null);
-        userService.createUserFromFirebase.mockResolvedValue({
+        userService.createUser.mockResolvedValue({
             id: '2',
             firebaseUid: 'firebase-uid-123',
         } as any);
 
         const result = await authService.loginWithFirebase('fake-token');
 
-        expect(userService.createUserFromFirebase).toHaveBeenCalled();
+        expect(userService.createUser).toHaveBeenCalled();
         expect(result.accessToken).toBeDefined();
     });
 });

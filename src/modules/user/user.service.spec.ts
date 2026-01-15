@@ -38,7 +38,7 @@ describe('UserService', () => {
         const prisma = (userService as any).prisma;
         prisma.user.create.mockResolvedValue({ id: '1' });
 
-        const user = await userService.createUserFromFirebase({
+        const user = await userService.createUser({
             uid: 'firebase-uid-123',
             email: 'salma@test.com',
             name: 'Salma',
