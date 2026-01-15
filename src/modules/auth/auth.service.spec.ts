@@ -3,8 +3,6 @@ import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 
-import { FirebaseService } from './firebase.service';
-
 describe('AuthService', () => {
     let authService: AuthService;
     let userService: jest.Mocked<UserService>;
@@ -16,7 +14,7 @@ describe('AuthService', () => {
                 {
                     provide: UserService,
                     useValue: {
-                        findByFirebaseUid: jest.fn(),
+                        findOneByEmail: jest.fn(),
                         createUser: jest.fn(),
                     },
                 },
@@ -26,15 +24,6 @@ describe('AuthService', () => {
                         sign: jest.fn().mockReturnValue('jwt-token'),
                     },
                 },
-                {
-                    provide: FirebaseService,
-                    useValue: {
-                        verifyToken: jest.fn().mockResolvedValue({
-                            uid: 'firebase-uid-123',
-                            email: 'salma@test.com',
-                        }),
-                    },
-                },
             ],
         }).compile();
 
@@ -42,29 +31,30 @@ describe('AuthService', () => {
         userService = moduleRef.get(UserService);
     });
 
-    it('should login existing user and return JWT', async () => {
-        userService.findByFirebaseUid.mockResolvedValue({
+    it('should login existing user and return access token', async () => {
+        userService.findOneByEmail.mockResolvedValue({
             id: '1',
-            firebaseUid: 'firebase-uid-123',
             email: 'salma@test.com',
+            password: '$2a$10$hashedpassword' // bcrypt hash
         } as any);
 
-        const result = await authService.loginWithFirebase('fake-token');
+        // Mock bcrypt comparison
+        jest.spyOn(require('bcryptjs'), 'compare').mockResolvedValue(true);
+
+        const result = await authService.login({
+            email: 'salma@test.com',
+            password: 'password'
+        });
 
         expect(result.accessToken).toBeDefined();
-        expect(userService.createUser).not.toHaveBeenCalled();
     });
 
-    it('should create user if not exists', async () => {
-        userService.findByFirebaseUid.mockResolvedValue(null);
-        userService.createUser.mockResolvedValue({
-            id: '2',
-            firebaseUid: 'firebase-uid-123',
-        } as any);
+    it('should throw error for invalid credentials', async () => {
+        userService.findOneByEmail.mockResolvedValue(null);
 
-        const result = await authService.loginWithFirebase('fake-token');
-
-        expect(userService.createUser).toHaveBeenCalled();
-        expect(result.accessToken).toBeDefined();
+        await expect(authService.login({
+            email: 'salma@test.com',
+            password: 'password'
+        })).rejects.toThrow();
     });
 });

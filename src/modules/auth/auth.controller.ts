@@ -16,9 +16,4 @@ export class AuthController {
 	login(@Body() dto: LoginDTO) {
 		return this.authService.login(dto);
 	}
-
-	@Post('firebase')
-	loginWithFirebase(@Body('firebaseToken') token: string) {
-		return this.authService.loginWithFirebase(token);
-	}
 }

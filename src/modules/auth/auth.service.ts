@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/co
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UserService } from '../user/user.service';
-import { FirebaseService } from './firebase.service';
 import { RegisterDTO } from './dto/register.dto';
 import { LoginDTO } from './dto/login.dto';
 
@@ -11,7 +10,6 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly firebaseService: FirebaseService,
   ) { }
 
   async register(dto: RegisterDTO) {
@@ -46,24 +44,6 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  async loginWithFirebase(firebaseToken: string) {
-    const firebaseUser = await this.firebaseService.verifyToken(firebaseToken);
-
-    let user = await this.userService.findByFirebaseUid(firebaseUser.uid);
-
-    if (!user) {
-      user = await this.userService.createUser({
-        uid: firebaseUser.uid,
-        email: firebaseUser.email,
-        name: firebaseUser.name,
-        picture: firebaseUser.picture,
-        provider: 'firebase',
-      });
-    }
-
-    return this.generateToken(user);
-  }
-
   async oauthLogin(provider: string, profile: any) {
     let user = await this.userService.findOneByEmail(profile.emails[0].value);
 
@@ -73,9 +53,6 @@ export class AuthService {
         name: profile.displayName,
         picture: profile.photos[0]?.value,
         provider: provider,
-        // uid: profile.id // Optional, mapping provider ID to firebaseUid? Or leaving it empty?
-        // Let's use profile.id as firebaseUid if we want uniqueness mapping, or leave it. 
-        // For now, let's map it if possible or ignore.
       });
     }
 

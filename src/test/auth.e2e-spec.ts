@@ -18,7 +18,7 @@ describe('Auth E2E', () => {
     it('/auth/login (POST)', async () => {
         const res = await request(app.getHttpServer())
             .post('/auth/login')
-            .send({ firebaseToken: 'fake-token' })
+            .send({ email: 'test@example.com', password: 'password123' })
             .expect(201);
 
         expect(res.body.accessToken).toBeDefined();

@@ -5,12 +5,6 @@ import { PrismaService } from '../../database/prisma.service';
 export class UserService {
     constructor(private readonly prisma: PrismaService) { }
 
-    findByFirebaseUid(firebaseUid: string) {
-        return this.prisma.user.findUnique({
-            where: { firebaseUid },
-        });
-    }
-
     findOneByEmail(email: string) {
         return this.prisma.user.findUnique({
             where: { email },
@@ -18,7 +12,6 @@ export class UserService {
     }
 
     createUser(data: {
-        uid?: string;
         email: string;
         name?: string;
         picture?: string;
@@ -27,7 +20,6 @@ export class UserService {
     }) {
         return this.prisma.user.create({
             data: {
-                firebaseUid: data.uid as any,
                 email: data.email,
                 name: data.name,
                 avatarUrl: data.picture,

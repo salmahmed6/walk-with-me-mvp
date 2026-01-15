@@ -25,21 +25,13 @@ describe('UserService', () => {
         userService = moduleRef.get(UserService);
     });
 
-    it('should find user by firebase UID', async () => {
-        const prisma = (userService as any).prisma;
-        prisma.user.findUnique.mockResolvedValue({ id: '1' });
 
-        const user = await userService.findByFirebaseUid('firebase-uid-123');
-
-        expect(user).toBeDefined();
-    });
 
     it('should create user from firebase data', async () => {
         const prisma = (userService as any).prisma;
         prisma.user.create.mockResolvedValue({ id: '1' });
 
         const user = await userService.createUser({
-            uid: 'firebase-uid-123',
             email: 'salma@test.com',
             name: 'Salma',
         });
