@@ -7,3 +7,4 @@ import { WalkModule } from './modules/walk/walk.module';
 })
 export class AppModule { }
 
+
