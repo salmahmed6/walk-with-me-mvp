@@ -25,17 +25,6 @@ export class WalkService {
         return { walkId, userId };
     }
 
-    async acceptJoin(walkId: string, userId: string) {
-        return this.prisma.walk.update({
-            where: { id: walkId },
-            data: {
-                participantId: userId,
-                status: 'ACTIVE',
-                startedAt: new Date(),
-            },
-        });
-    }
-
     finishWalk(walkId: string) {
         return this.prisma.walk.update({
             where: { id: walkId },

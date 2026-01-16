@@ -17,6 +17,12 @@ describe('WalkService', () => {
                             findUnique: jest.fn(),
                             update: jest.fn(),
                         },
+                        $transaction: jest.fn().mockImplementation((cb) => cb({
+                            walk: {
+                                findUnique: jest.fn().mockResolvedValue({ status: 'WAITING' }),
+                                update: jest.fn().mockResolvedValue({ status: 'ACTIVE' }),
+                            }
+                        })),
                     },
                 },
             ],

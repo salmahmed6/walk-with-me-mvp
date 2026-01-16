@@ -9,7 +9,14 @@ describe('WalkGateway', () => {
             requestJoin: jest.fn(),
             acceptJoin: jest.fn(),
         };
-        gateway = new WalkGateway(walkService);
+        const chatService = {
+            sendMessage: jest.fn(),
+        };
+        gateway = new WalkGateway(walkService, chatService as any);
+        gateway.server = {
+            to: jest.fn().mockReturnThis(),
+            emit: jest.fn(),
+        } as any;
     });
 
     it('should emit join request event', async () => {
