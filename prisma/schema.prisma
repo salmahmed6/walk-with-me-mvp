@@ -34,3 +34,13 @@ model Walk {
   startedAt       DateTime?
   endedAt         DateTime?
 }
+
+model WalkMessage {
+  id        String   @id @default(uuid())
+  walkId    String
+  senderId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  Walk Walk @relation(fields: [walkId], references: [id], onDelete: Cascade)
+}
