@@ -26,3 +26,25 @@ export class WalkGateway {
         return this.walkService.acceptJoin(data.walkId, data.userId);
     }
 }
+
+@SubscribeMessage('sendMessage')
+async handleSendMessage(
+    @MessageBody()
+  data: { walkId: string; senderId: string; content: string },
+) {
+    const message = await this.chatService.sendMessage(
+        data.walkId,
+        data.senderId,
+        data.content,
+    );
+
+    this.server.to(data.walkId).emit('newMessage', message);
+}
+
+@SubscribeMessage('joinWalkRoom')
+handleJoinRoom(
+    @ConnectedSocket() client,
+    @MessageBody() walkId: string,
+) {
+    client.join(walkId);
+}

@@ -45,4 +45,22 @@ export class WalkService {
             },
         });
     }
+
+    async acceptJoin(walkId: string, userId: string) {
+        return this.prisma.$transaction(async (tx) => {
+            const walk = await tx.walk.findUnique({ where: { id: walkId } });
+
+            if (!walk) throw new Error('Walk not found');
+            if (walk.status !== 'WAITING') throw new Error('Walk not joinable');
+
+            return tx.walk.update({
+                where: { id: walkId },
+                data: {
+                    participantId: userId,
+                    status: 'ACTIVE',
+                    startedAt: new Date(),
+                },
+            });
+        });
+    }
 }
