@@ -43,4 +43,4 @@ import { GoogleStrategy } from './strategies/google.strategy';
     },
   ],
 })
-export class AuthModule { }
+export class AuthModule {}
