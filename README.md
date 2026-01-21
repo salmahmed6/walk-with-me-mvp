@@ -1,81 +1,73 @@
-# Walk With Me Backend
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-Powering fitness and connection with Walk With Me!
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-The Walk With Me backend is a Nest.js-based API that supports a mobile app designed to motivate users to walk, either alone or with friends, while enjoying podcasts or Quran recitations. It handles authentication, walk tracking, real-time chat, location updates, rewards, and content integration.
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Key Features
+## Description
 
-- **Seamless Authentication:** Supports Google, Twitter, and email login via Firebase Auth or OAuth.
-- **Walk Management:** Create and track walks by time or distance, with real-time progress via WebSocket.
-- **Real-Time Chat:** Enables synced media and chat for social walks using WebSocket.
-- **Location Tracking:** Integrates Google Maps API for real-time route and avatar progress.
-- **Reward System:** Awards coins for walks and unlocks features through a leveling system.
-- **Content Integration:** Connects to podcast (e.g., ListenAPI or Spotify) and Quran (e.g., Al Quran Cloud) APIs.
-
-## Vision
-The Walk With Me backend aims to be a scalable, real-time foundation for a fitness and mindfulness app. Future plans include AI-driven walk recommendations, group walk support, and wearable integrations for enhanced tracking.
-
-## Why Contribute?
-Join us to build a backend that powers movement and connection. Whether you’re into APIs, real-time systems, or database design, your skills can shape Walk With Me’s future. Let’s make walking rewarding and fun!
-
-## Get Started
-
-- Check out the issues for tasks.
-- Fork, clone, and submit PRs—we’d love your ideas!
-
-## Contributing
-Want to help shape the backend? See our CONTRIBUTING.md for guidelines on reporting bugs, suggesting features, or submitting code. We’re excited to collaborate!
-
-## Project Structure
-The backend is organized for scalability and maintainability:
-
-- `/src`: Core Nest.js code with modules for auth, walks, content, etc.
-- `/docs`: API documentation, deployment guides, and TODOs.
-- `/diagrams`: System architecture, user flows, and database schemas.
-- `/test`: Unit and integration tests for reliability.
-
-For details, see `docs/FILESTRUCTURE.md`.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/salmahmed6/walk-with-me-backend.git
-   ```
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-3. **Configure environment variables:**
-   - Copy `.env.example` to `.env`.
-   - Set API keys for Google Maps, podcast (e.g., ListenAPI or Spotify), Quran (e.g., Al Quran Cloud), and Firebase Auth.
-4. **Run the backend:**
-   ```bash
-   npm start
-   ```
+```bash
+$ npm install
+```
 
-## Tech Stack
+## Running the app
 
-- **Backend:** Nest.js for a scalable server.
-- **Database:** Firebase Firestore or MongoDB for data storage.
-- **APIs:**
-  - Google Maps API for location tracking.
-  - Podcast API (e.g., ListenAPI or Spotify) for audio streaming.
-  - Quran API (e.g., Al Quran Cloud) for recitations.
-- **Authentication:** Firebase Auth or OAuth (Google, Twitter, email).
-- **Real-Time:** WebSocket or Firebase Realtime Database for synced walks and chat.
-- **Caching:** Redis for performance optimization.
+```bash
+# development
+$ npm run start
 
-## Documentation
+# watch mode
+$ npm run start:dev
 
-- **TODOs:** See `docs/TODO.md` for MVP and future features.
-- **API Docs:** Endpoints are documented in `docs/api`.
-- **Diagrams:** Architecture and flows in the `/diagrams` folder.
-- **Deployment:** Guides for Docker and AWS in `docs/deployment`.
+# production mode
+$ npm run start:prod
+```
+
+## Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
 
-
-
+Nest is [MIT licensed](LICENSE).
