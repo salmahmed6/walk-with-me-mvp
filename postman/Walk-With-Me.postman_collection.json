@@ -1,0 +1,183 @@
+{
+  "info": {
+    "name": "Walk With Me - API Tests",
+    "description": "Postman collection to test the Walk With Me API (auth, user, property). Set `baseUrl` in environment to point to your running server.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "accessToken", "value": "" },
+    { "key": "refreshToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Local Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  var json = pm.response.json();",
+                  "  if (json.accessToken) pm.environment.set('accessToken', json.accessToken);",
+                  "  if (json.refreshToken) pm.environment.set('refreshToken', json.refreshToken);",
+                  "}",
+                  "pm.test('Login responded 200', function(){ pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Firebase Login (modules/auth)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firebaseToken\": \"<your-firebase-token>\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  var json = pm.response.json();",
+                  "  if (json.accessToken) pm.environment.set('accessToken', json.accessToken);",
+                  "  if (json.refreshToken) pm.environment.set('refreshToken', json.refreshToken);",
+                  "}",
+                  "pm.test('Firebase login responded 200', function(){ pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{refreshToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/auth/refresh", "host": ["{{baseUrl}}"], "path": ["auth","refresh"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('Refresh returned 200', function(){ pm.response.to.have.status(200); });",
+                "if (pm.response.code === 200) { var j = pm.response.json(); if (j.accessToken) pm.environment.set('accessToken', j.accessToken); }"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "Sign Out",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/auth/signout", "host": ["{{baseUrl}}"], "path": ["auth","signout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"secret123\",\n  \"name\": \"New User\"\n}" },
+            "url": { "raw": "{{baseUrl}}/user", "host": ["{{baseUrl}}"], "path": ["user"] }
+          }
+        },
+        {
+          "name": "Get Profile (protected)",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/user/profile", "host": ["{{baseUrl}}"], "path": ["user","profile"] }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Name\"\n}" },
+            "url": { "raw": "{{baseUrl}}/user/1", "host": ["{{baseUrl}}"], "path": ["user","1"] }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/user/1", "host": ["{{baseUrl}}"], "path": ["user","1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Property",
+      "item": [
+        {
+          "name": "List Properties",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/property?page=1&limit=10", "host": ["{{baseUrl}}"], "path": ["property"], "query": [ { "key": "page", "value": "1" }, { "key": "limit", "value": "10" } ] }
+          }
+        },
+        {
+          "name": "Get Property",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/property/1", "host": ["{{baseUrl}}"], "path": ["property","1"] }
+          }
+        },
+        {
+          "name": "Create Property",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Lovely Apartment\",\n  \"description\": \"A cozy 2BR near the park\",\n  \"price\": 1200\n}" },
+            "url": { "raw": "{{baseUrl}}/property", "host": ["{{baseUrl}}"], "path": ["property"] }
+          }
+        },
+        {
+          "name": "Update Property",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"price\": 1300\n}" },
+            "url": { "raw": "{{baseUrl}}/property/1", "host": ["{{baseUrl}}"], "path": ["property","1"] }
+          }
+        },
+        {
+          "name": "Delete Property",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/property/1", "host": ["{{baseUrl}}"], "path": ["property","1"] }
+          }
+        }
+      ]
+    }
+  ]
+}

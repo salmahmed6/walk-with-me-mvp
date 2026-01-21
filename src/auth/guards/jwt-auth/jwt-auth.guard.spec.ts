@@ -2,6 +2,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 
 describe('JwtAuthGuard', () => {
   it('should be defined', () => {
-    expect(new JwtAuthGuard()).toBeDefined();
+    const mockReflector = ({ getAllAndOverride: () => undefined } as unknown) as any;
+    expect(new JwtAuthGuard(mockReflector)).toBeDefined();
   });
 });
