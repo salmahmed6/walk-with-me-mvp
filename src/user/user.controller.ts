@@ -4,11 +4,13 @@ import {
   Post,
   Body,
   Patch,
+  Put,
   Param,
   Delete,
   UseGuards,
   Req,
-  SetMetadata,
+  Query,      
+  SetMetadata,  
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -45,5 +47,17 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+
+  @Put('profile')
+  @UseGuards(JwtAuthGuard)
+  async updateProfile(@Req() req, @Body() dto: UpdateUserDto) {
+    return this.userService.update(req.user.id, dto);
+  }
+
+  @Get('search')
+  @UseGuards(JwtAuthGuard)
+  async searchUsers(@Query('q') query: string) {
+    return this.userService.searchUsers(query);
   }
 }
