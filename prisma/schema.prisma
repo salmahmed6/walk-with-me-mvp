@@ -9,10 +9,12 @@ datasource db {
 
 model User {
   id           String   @id @default(uuid())
-  firebaseUid  String   @unique
   email        String   @unique
-  name         String?
+  firstName    String?
+  lastName     String?
+  bio          String?
   avatarUrl    String?
   provider     String?
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
