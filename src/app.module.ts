@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { GatewayModule } from './gateway/gateway.module'; 
 import dbConfig from './config/db.config';
 import dbConfigProduction from './config/db.config.production';
 
@@ -24,6 +25,7 @@ import dbConfigProduction from './config/db.config.production';
     }),
     UserModule,
     AuthModule,
+    GatewayModule,
   ],
   controllers: [AppController],
   providers: [AppService],

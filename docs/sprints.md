@@ -3,7 +3,6 @@
 ## Sprint 1 — Authentication (DONE)
 - Email/Password login
 - Google OAuth
-- Twitter OAuth
 - JWT Security
 - Prisma User Model
 
